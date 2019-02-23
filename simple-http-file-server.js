@@ -5,6 +5,8 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const chalk = require('chalk');
+
 
 var server = http.createServer((req, res) => {
 	console.log(req.url);
@@ -20,12 +22,13 @@ var server = http.createServer((req, res) => {
   // parse the URL into its component parts
 	const parsedUrl = url.parse(req.url, true);
 	console.log(parsedUrl);
+	
   // extract the pathname and query properties
 	const { pathname, query } = parsedUrl;
 
 	// output absolute path info
-	console.log('__dirname is %s', __dirname);
-	console.log('cwd is %s', process.cwd());
+	console.log(chalk.inverse('__dirname is %s', __dirname));
+	console.log(chalk.blue('cwd is %s', process.cwd()));
 
   var contentType = 'text/plain';
 	// Extract the filename extension
