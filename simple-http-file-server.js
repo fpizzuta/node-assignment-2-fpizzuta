@@ -6,6 +6,7 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
+var mime = require('mime');
 
 
 var server = http.createServer((req, res) => {
@@ -27,14 +28,20 @@ var server = http.createServer((req, res) => {
 	const { pathname, query } = parsedUrl;
 
 	// output absolute path info
-	console.log(chalk.inverse('__dirname is %s', __dirname));
+	console.log(chalk.blue('__dirname is %s', __dirname));
 	console.log(chalk.blue('cwd is %s', process.cwd()));
 
-  var contentType = 'text/plain';
-	// Extract the filename extension
-	//  then set the mimetype if it is known
-  var extname = String(path.extname(pathname)).toLowerCase();
-  contentType = mimeTypes[extname] || contentType;
+	//Loop through query string object and extract all key value pairs
+	for (var key in query) {
+		console.log('%s : %s',key,query[key]);
+	} 
+
+ //  var contentType = 'text/plain';
+	// // Extract the filename extension
+	// //  then set the mimetype if it is known
+ //  var extname = String(path.extname(pathname)).toLowerCase();
+ //  contentType = mimeTypes[extname] || contentType;
+ 	// contentType = mime.contentType;
 	
 	// Create an absolute path to the requested file.
 	// Assume the server was started from the webroot
@@ -67,7 +74,7 @@ var server = http.createServer((req, res) => {
 	      }
 	    } else {
 		    // If we get to here, 'data' should contain the contents of the file
-				res.writeHead(200, contentType);
+				res.writeHead(200, mime.contentType);
 				res.end(data, 'binary', ()=>{
 					console.log("file delivered: " + pathname);
 				});
